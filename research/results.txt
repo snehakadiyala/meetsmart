@@ -1,0 +1,4 @@
+1 0 0 []
+2 0:00:00.200000 0:00:01.700000 ['affected', 'area', 'created']
+3 0:00:08.300000 0:00:11.900000 ['hard', 'all', 'week', 'women', 'stopped', 'by', 'and', 'told', 'me']
+2 0:00:11.900000 0:00:15.500000 ['spent', 'the', 'letter', 'I', 'went', 'to', 'the', 'movie', 'twice', 'with', 'a', 'manual']
