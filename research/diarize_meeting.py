@@ -1,5 +1,8 @@
 from google.cloud import speech_v1p1beta1 as speech
 import json
+import numpy as np
+
+
 client = speech.SpeechClient()
 
 #speech_file = "trial.wav"
@@ -8,6 +11,8 @@ client = speech.SpeechClient()
 #audio = speech.RecognitionAudio(content=content)
 
 gcs_uri = "gs://speeches-to-text/interrupted_2.wav"
+
+
 audio = speech.RecognitionAudio(uri=gcs_uri)
 config = speech.RecognitionConfig(
     encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
@@ -20,6 +25,28 @@ config = speech.RecognitionConfig(
 print("Waiting for operation to complete...")
 response = client.long_running_recognize(config=config, audio=audio)
 
+def get_speaker_diarization_results(source_file_name, speaker_count):
+    gcs_uri = "gs://ami_corpus/meeting_files/" + source_file_name
+    audio = speech.RecognitionAudio(uri=gcs_uri)
+    config = speech.RecognitionConfig(
+        encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+        sample_rate_hertz=48000,
+        language_code="en-US",
+        enable_speaker_diarization=True,
+        diarization_speaker_count=speaker_count,
+    )
+    response = client.long_running_recognize(config=config, audio=audio)
+    result = response.result().results[-1]
+    return result.alternatives[0].words
+
+def get_speaker_timings(results):
+    timing = [0] * speaker_count
+    for word in words: 
+        timing[word.speaker_tag-1] += (word.end_time - word.start_time).total_seconds() 
+    return [time / 60 for time in timing]
+
+def get_speaker_variance(results):
+    pass
 # The transcript within each result is separate and sequential per result.
 # However, the words list within an alternative includes all the words
 # from all the results thus far. Thus, to get all the words with speaker
