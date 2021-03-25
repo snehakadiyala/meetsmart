@@ -45,13 +45,13 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
 # def get_preds_for_wavs():
 
 """Uploads a file to the bucket."""
-file_name = "test1"
+file_name = "trial"
 bucket_name = "ami_corpus"
 source_file_name = file_name + ".wav"
-destination_blob_name = "meeting_files"
+destination_blob_name = "meeting_files/" + source_file_name
 
-recording_sid = get_recording(call_uri, sid, file_name)
-delete_recording(call_uri, recording_sid)
+# recording_sid = get_recording(call_uri, sid, file_name)
+# delete_recording(call_uri, recording_sid)
 
 # upload to gcp 
 upload_blob(bucket_name, source_file_name, destination_blob_name)
@@ -67,4 +67,4 @@ os.remove(source_file_name)
 url = "https://us-central1-silicon-webbing-306013.cloudfunctions.net/basic_overlap_prediction"
 param = {"meeting_wav_file_name": source_file_name}
 
-requests.get(url, json=param)
+print(requests.post(url, json=param).json())
