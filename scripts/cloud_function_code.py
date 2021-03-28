@@ -42,7 +42,6 @@ def predict(request):
         `make_response <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>`.
     """
 
-    print("Entered")
     
     request = request.get_json()
     meeting_wav_file_name = request["meeting_wav_file_name"]
